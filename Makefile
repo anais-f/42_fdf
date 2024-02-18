@@ -21,6 +21,9 @@ SRCS_DIR = ./srcs
 
 SRCS =\
 		fdf.c \
+		events.c \
+		bresenham.c \
+		parsing.c \
 
 
 SRCS := $(SRCS:%=$(SRCS_DIR)/%)
@@ -105,14 +108,11 @@ $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
 #-c prend les .c et les creer en .o
 # -o : sert a donner les noms
 
-fsanitize : fclean $(LIBS_TARGET) $(OBJS) $(INCS)
+fsanitize : fclean $(LIBS_TARGET) $(MLX_TARGET) $(OBJS) $(INCS)
 	$(CC) $(CFLAGS) $(CFSIGSEV) $(CPPFLAGS) $(OBJS) -L$(dir $(LIBS_TARGET)) -lft -L$(dir $(MLX_TARGET)) -lmlx -L$(dir $(MLX_TARGET)) -lmlx_Linux -o $(NAME)
 
 #fsanitize_bonus : fclean $(LIBS_TARGET) $(OBJS_BONUS) $(INCS)
 #	$(CC) $(CFLAGS) $(CFSIGSEV) $(CPPFLAGS) $(OBJS_BONUS) -L$(dir $(LIBS_TARGET)) -lft -o $(CHECKER)
-
-valgrind :
-	$(MAKE) $(VALGRIND)
 
 clean :
 	$(RM) $(OBJS_DIR)
