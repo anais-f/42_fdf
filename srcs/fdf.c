@@ -17,39 +17,38 @@ int main(int argc, char **argv)
 {
 	t_vars	vars;
 	t_data	data;
-	int 	nb_point = 0;
-	char 	*str;
-	t_topo	**topo_array;
+	t_map	map;
 
-	int i;
+	int i = 0;
 	int j = 0;
-	int nb_line;
 
-	//INIT MES STRCUTURES DE POINT A ZERO
-
+	//INIT MES STRUCTURES DE POINT A ZERO
 
 
-	nb_line = count_lines(argv[1], &topo_array);
-	create_array(argv[1], topo_array, &nb_point);
+	if (count_lines(argv[1], &map) == -1)
+	{
+		perror("Error during parsing");
+		return (-1);
+	}
+	if (create_array(argv[1], &map) == -1)
+	{
+		perror("Error during parsing");
+		return (-1);
+	}
 
-	printf("nb de ligne = %d et nb de point = %d\n", nb_line, nb_point);
+	printf("nb de ligne = %d et nb de point = %d\n", map.nb_line, map.line->nb_point_per_line);
 
 	i = 0;
-	while (i < nb_line )
+	while (i < map.nb_line)
 	{
 		j = 0;
-		while (j < nb_point)
+		while (j < 6)
 		{
-			printf("x = %d, y = %d, z = %d\n", topo_array[i][j].x0, topo_array[i][j].y0, topo_array[i][j].z);
+			printf("x = %d,\n", map.line->topo->x);
 			j++;
 		}
 		i++;
 	}
-
-
-
-
-
 
 
 
