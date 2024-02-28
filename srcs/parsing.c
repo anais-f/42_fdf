@@ -29,13 +29,13 @@ int	count_lines(char *s, t_map	*map)
 		str = get_next_line(file);
 		map->nb_line++;
 	}
-	if (errno != 0) //pour verifier si gnl me revoit pas null a cause d'in malloc qui pete
+	if (errno != 0) //pour verifier si gnl me revoit pas null a cause d'un malloc qui pete
 	{
 		close(file);
 		return (-1);
 	}
-	map = ft_calloc(map->nb_line, sizeof(t_line));
-	if (map == NULL)
+	map->line = ft_calloc(map->nb_line, sizeof(t_line));
+	if (map->line == NULL)
 	{
 		close(file);
 		return (-1);
@@ -46,11 +46,12 @@ int	count_lines(char *s, t_map	*map)
 
 
 //2eme appel GNL malloc nb de x et remplir la structure
-int	create_array(char *s, t_line *line)
+int	create_array(char *s, t_map *map)
 {
 	int file;
 	char *str;
-
+	int i = 0;
+	t_line	*line;
 
 	file = open(s, O_RDONLY);
 	if (file == -1)
@@ -58,10 +59,12 @@ int	create_array(char *s, t_line *line)
 	str = get_next_line(file);
 	while (str)
 	{
+		line = &map->line[i];
 		if (allocate_line(line, str) == -1)
 		{
 			return (-1);
 		}
+		i++;
 		free(str);
 		str = get_next_line(file);
 	}
@@ -79,7 +82,7 @@ int	allocate_line(t_line *line, char *str)
 	line->nb_point_per_line = ft_array_len(split_return);
 	//printf("line->nb_point_per_line = %d\n", line->nb_point_per_line);
 	line->topo = ft_calloc(line->nb_point_per_line, sizeof(t_topo));
-	printf("line topo = \n", line->topo->x);
+	//printf("line topo = \n", line->topo->x);
 	if (line->topo == NULL)
 	{
 		free_array(split_return);
@@ -107,28 +110,3 @@ void	fill_array(char **split_return, t_line *line)
 	}
 	y++;
 }
-
-
-size_t ft_array_len(char **array)
-{
-	size_t	i;
-
-	i = 0;
-	while (array[i])
-		i++;
-	return (i);
-}
-
-void	free_array(char **array)
-{
-	int i;
-
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-}
-

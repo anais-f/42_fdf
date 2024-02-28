@@ -24,6 +24,7 @@ SRCS =\
 		events.c \
 		bresenham.c \
 		parsing.c \
+		utils.c \
 
 
 SRCS := $(SRCS:%=$(SRCS_DIR)/%)

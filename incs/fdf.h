@@ -40,8 +40,6 @@ typedef struct	s_data
 	int 	endian;
 	t_vars	*vars;
 }	t_data;
-//7869896
-//7869768
 
 typedef struct	s_topo
 {
@@ -54,13 +52,13 @@ typedef struct	s_topo
 
 typedef struct	s_line
 {
-	t_topo	*topo;
+	t_topo	*topo; // tableau de points de chaque ligne
 	size_t 	nb_point_per_line;
 }	t_line;
 
 typedef struct	s_map
 {
-	t_line	*line;
+	t_line	*line; //tableau de lignes
 	int 	nb_line;
 }	t_map;
 
@@ -74,10 +72,11 @@ int	key_hook(int keycode, t_vars *vars);
 int ft_mouse_line(int button, int x1, int y1, t_data *data);
 
 int	count_lines(char *s, t_map	*map);
-int	create_array(char *s, t_line *line);
+int	create_array(char *s, t_map *map);
 size_t ft_array_len(char **array);
 int	allocate_line(t_line *line, char *str);
 void	free_array(char **array);
 void	fill_array(char **split_return, t_line *line);
+void	free_map(t_map *map);
 
 #endif
