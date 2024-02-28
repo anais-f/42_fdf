@@ -30,7 +30,7 @@ int ft_mouse_line(int button, int x1, int y1, t_data *data)
 	{
 //		printf("x1 = %d et y1 = %d\n", x1, y1);
 //		printf("x0 = %d et y0 = %d\n", x0, y0);
-		plot_line(x0, y0, x1, y1, data);
+		bresenham_choose_line(x0, y0, x1, y1, data);
 		mlx_put_image_to_window(data->vars->mlx_ptr, data->vars->win_ptr, data->img, 0, 0);
 	}
 	return (0);

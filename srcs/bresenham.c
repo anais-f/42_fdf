@@ -6,13 +6,24 @@
 /*   By: anfichet <anfichet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 13:17:07 by anfichet          #+#    #+#             */
-/*   Updated: 2024/02/18 13:17:07 by anfichet         ###   ########.fr       */
+/*   Updated: 2024/02/27 21:57:12 by anfichet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "fdf.h"
 
-// pour Dx > Dy
-void plot_line_low(int x0, int y0, int x1, int y1, t_data *data)
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+{
+	char	*dst;
+
+	if (x > WIDTH || y > HEIGH || x < 0 || y < 0)
+		return ;
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+
+	*(u_int32_t *)dst = color;
+}
+
+/* for dx > dy, octants along the x axis */
+void bresenham_low(int x0, int y0, int x1, int y1, t_data *data)
 {
 	int dx = x1 - x0;
 	int dy = y1 - y0;
@@ -38,8 +49,8 @@ void plot_line_low(int x0, int y0, int x1, int y1, t_data *data)
 	}
 }
 
-//pour dx < dy
-void	plot_line_high(int x0, int y0, int x1, int y1, t_data *data)
+/* for dx < dy, octants along the y axis */
+void	bresenham_high(int x0, int y0, int x1, int y1, t_data *data)
 {
 	int dx = x1 - x0;
 	int dy = y1 - y0;
@@ -65,28 +76,29 @@ void	plot_line_high(int x0, int y0, int x1, int y1, t_data *data)
 	}
 }
 
-void	plot_line(int x0, int y0, int x1, int y1, t_data *data)
+void	bresenham_choose_line(int x0, int y0, int x1, int y1, t_data *data)
 {
 	if (abs(y1 - y0) < abs(x1 - x0))
 	{
 		if (x0 > x1)
-		{
-			plot_line_low(x1, y1, x0, y0, data);
-		}
-
+			bresenham_low(x1, y1, x0, y0, data);
 		else
-		{
-			plot_line_low(x0, y0, x1, y1, data);
-		}
-
+			bresenham_low(x0, y0, x1, y1, data);
 	}
 	else
 	{
 		if (y0 > y1)
-		{
-			plot_line_high(x1, y1, x0, y0, data);
-		}
+			bresenham_high(x1, y1, x0, y0, data);
 		else
-			plot_line_high(x0, y0, x1, y1, data);
+			bresenham_high(x0, y0, x1, y1, data);
 	}
 }
+
+/*
+void	projection(t_topo *topo)
+{
+	topo->px = (sqrt(2) / 2 * x0 ) - (sqrt(2) / 2 * y0 );
+	topo->py = (sqrt(2/3) * z) - (1 / sqrt(6) * x0) - (1 / sqrt(6) * y0);
+}
+*/
+

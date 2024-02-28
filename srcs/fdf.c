@@ -6,36 +6,51 @@
 /*   By: anfichet <anfichet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 17:52:02 by anfichet          #+#    #+#             */
-/*   Updated: 2024/02/15 14:02:27 by anfichet         ###   ########.fr       */
+/*   Updated: 2024/02/27 22:50:10 by anfichet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "fdf.h"
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
-{
-	char	*dst;
-
-	if (x > WIDTH || y > HEIGH || x < 0 || y < 0)
-		return ;
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-
-	*(u_int32_t *)dst = color;
-}
 
 
 int main(int argc, char **argv)
 {
 	t_vars	vars;
 	t_data	data;
-	t_point	point;
-	int		*file;
+	int 	nb_point = 0;
+	char 	*str;
+	t_topo	**topo_array;
 
-	file = get_next_line(0);
-	while (file)
+	int i;
+	int j = 0;
+	int nb_line;
+
+	//INIT MES STRCUTURES DE POINT A ZERO
+
+
+
+	nb_line = count_lines(argv[1], &topo_array);
+	create_array(argv[1], topo_array, &nb_point);
+
+	printf("nb de ligne = %d et nb de point = %d\n", nb_line, nb_point);
+
+	i = 0;
+	while (i < nb_line )
 	{
-		free(file);
-		file = get_next_line(0);
+		j = 0;
+		while (j < nb_point)
+		{
+			printf("x = %d, y = %d, z = %d\n", topo_array[i][j].x0, topo_array[i][j].y0, topo_array[i][j].z);
+			j++;
+		}
+		i++;
 	}
+
+
+
+
+
+
 
 
 	vars.mlx_ptr = mlx_init();
@@ -45,22 +60,12 @@ int main(int argc, char **argv)
 	data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
 
 
-//
-//	point.x0 = 50;
-//	point.x1 = 50;
-//	point.y0 = 200;
-//	point.y1 = 20;
-//
-//	plot_line(point.x0, point.y0, point.x1, point.y1, &data);
+
 
 	mlx_mouse_hook(vars.win_ptr, ft_mouse_line, &data);
 	//mlx_put_image_to_window(vars.mlx_ptr, vars.win_ptr, data.img, 0, 0);
-
-
 	mlx_key_hook(vars.win_ptr, ft_key_close, &vars);
-
 	mlx_hook(vars.win_ptr, 17, 0L, mlx_loop_end, vars.mlx_ptr);
-
 
 
 	mlx_loop(vars.mlx_ptr);
