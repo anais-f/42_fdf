@@ -62,27 +62,29 @@ typedef struct	s_map
 	size_t 	nb_line;
 }	t_map;
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-int	ft_key_close(int keycode, t_vars *vars);
-int	ft_mouse_close(t_vars *vars);
-void bresenham_low(int x0, int y0, int x1, int y1, t_data *data);
-void	bresenham_high(int x0, int y0, int x1, int y1, t_data *data);
-void	bresenham_choose_line(int x0, int y0, int x1, int y1, t_data *data);
-int	key_hook(int keycode, t_vars *vars);
-int ft_mouse_line(int button, int x1, int y1, t_data *data);
 
-int	count_lines(char *s, t_map	*map);
-int	create_array(char *s, t_map *map);
-size_t ft_array_len(char **array);
-int	allocate_line(t_line *line, char *str, t_map *map);
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+int		ft_key_close(int keycode, t_vars *vars);
+int		ft_mouse_close(t_vars *vars);
+void 	bresenham_low(t_topo topo_start, t_topo topo_end, t_data *data);
+void	bresenham_high(t_topo topo_start, t_topo topo_end, t_data *data);
+void	bresenham_choose_line(t_topo topo_start, t_topo topo_end, t_data *data);
+int		key_hook(int keycode, t_vars *vars);
+
+int		create_lines(char *s, t_map	*map);
+size_t	count_lines(t_map *map, int file, char *str);
+int		create_topo_array(char *s, t_map *map);
+size_t	ft_array_len(char **array);
+int		allocate_line(t_line *line, char *str, t_map *map);
 void	free_array(char **array);
-void	fill_array(char **split_return, t_line *line, t_map *map);
+void	fill_topo_array(char **split_return, t_line *line, t_map *map);
 void	free_map(t_map *map);
-void	isometric_point(t_map *map, t_line *line);
+void	fill_isometric_point(t_map *map, t_line *line);
 void	draw_x_line(t_line *line, t_map *map, t_data *data);
 void	draw_y_line(t_line *line, t_map *map, t_data *data);
 
 //A SUPPRIMER
 void	print_map(t_map *map);
+int	ft_mouse_line(int button, int x1, int y1, t_data *data);
 
 #endif

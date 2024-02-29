@@ -19,41 +19,40 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 		return ;
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(u_int32_t *)dst = color;
-
 }
 
 /* for dx > dy, octants along the x axis */
-void bresenham_low(int x0, int y0, int x1, int y1, t_data *data)
+void	bresenham_low(t_topo topo_start, t_topo topo_end, t_data *data)
 {
-	int dx = x1 - x0;
-	int dy = y1 - y0;
-	int yi = 1;
-	int D = (2 * dy) - dx;
+	int dx = topo_end.px - topo_start.px;
+	int	dy = topo_end.py - topo_start.py;
+	int	yi = 1;
+	int	D = (2 * dy) - dx;
 
 	if (dy < 0)
 	{
 		yi = -1;
 		dy = -dy;
 	}
-	while (x0 <= x1)
+	while (topo_start.px <= topo_end.px)
 	{
-		my_mlx_pixel_put(data, x0, y0, 0x002ecc71);
+		my_mlx_pixel_put(data, topo_start.px, topo_start.py, 0x002ecc71);
 		if (D > 0)
 		{
-			y0 = y0 + yi;
+			topo_start.py = topo_start.py + yi;
 			D = D + (2 * (dy - dx));
 		}
 		else
 			D = D + 2 * dy;
-		x0++;
+		topo_start.px++;
 	}
 }
 
 /* for dx < dy, octants along the y axis */
-void	bresenham_high(int x0, int y0, int x1, int y1, t_data *data)
+void	bresenham_high(t_topo topo_start, t_topo topo_end, t_data *data)
 {
-	int dx = x1 - x0;
-	int dy = y1 - y0;
+	int dx = topo_end.px - topo_start.px;
+	int dy = topo_end.py - topo_start.py;
 	int xi = 1;
 	int D = (2 * dx) - dy;
 
@@ -62,43 +61,43 @@ void	bresenham_high(int x0, int y0, int x1, int y1, t_data *data)
 		xi = -1;
 		dx = -dx;
 	}
-	while (y0 <= y1)
+	while (topo_start.py <= topo_end.py)
 	{
-		my_mlx_pixel_put(data, x0, y0, 0x002ecc71);
+		my_mlx_pixel_put(data, topo_start.px, topo_start.py, 0x002ecc71);
 		if (D > 0)
 		{
-			x0 = x0 + xi;
+			topo_start.px = topo_start.px + xi;
 			D = D + (2 * (dx - dy));
 		}
 		else
 			D = D + 2 * dx;
-		y0++;
+		topo_start.py++;
 	}
 }
 
-void	bresenham_choose_line(int x0, int y0, int x1, int y1, t_data *data)
+void	bresenham_choose_line(t_topo topo_start, t_topo topo_end, t_data *data)
 {
-	if (abs(y1 - y0) < abs(x1 - x0))
+	if (fabs(topo_end.py - topo_start.py) < fabs(topo_end.px - topo_start.px))
 	{
-		if (x0 > x1)
-			bresenham_low(x1, y1, x0, y0, data);
+		if (topo_start.px > topo_end.px)
+			bresenham_low(topo_end, topo_start, data);
 		else
-			bresenham_low(x0, y0, x1, y1, data);
+			bresenham_low(topo_start, topo_end, data);
 	}
 	else
 	{
-		if (y0 > y1)
-			bresenham_high(x1, y1, x0, y0, data);
+		if (topo_start.py > topo_end.py)
+			bresenham_high(topo_end, topo_start, data);
 		else
-			bresenham_high(x0, y0, x1, y1, data);
+			bresenham_high(topo_start, topo_end, data);
 	}
 }
 
 
-void	isometric_point(t_map *map, t_line *line)
+void	fill_isometric_point(t_map *map, t_line *line)
 {
-	size_t i;
-	size_t j;
+	size_t	i;
+	size_t	j;
 
 	i = 0;
 	while (i < map->nb_line)
@@ -106,8 +105,11 @@ void	isometric_point(t_map *map, t_line *line)
 		j = 0;
 		while (j < line[i].nb_point_per_line)
 		{
-			line[i].topo[j].px = ((sqrt(2.0) / 2) * line[i].topo[j].x) - ((sqrt(2.0) / 2) * line[i].topo[j].y);
-			line[i].topo[j].py = (1 / sqrt(6.0) * line[i].topo[j].x) + (1 / sqrt(6.0) * line[i].topo[j].y) - (sqrt(2.0 / 3.0) * line[i].topo[j].z);
+			line[i].topo[j].px = ((sqrt(2.0) / 2) * line[i].topo[j].x)
+					- ((sqrt(2.0) / 2) * line[i].topo[j].y);
+			line[i].topo[j].py = (1 / sqrt(6.0) * line[i].topo[j].x)
+					+ (1 / sqrt(6.0) * line[i].topo[j].y)
+					- (sqrt(2.0 / 3.0) * line[i].topo[j].z);
 			line[i].topo[j].px += (double)WIDTH / 2;
 			line[i].topo[j].py += (double)HEIGH / 2;
 			j++;
@@ -129,10 +131,7 @@ void	draw_x_line(t_line *line, t_map *map, t_data *data)
 		j = 0;
 		while (j < (map->line[i].nb_point_per_line - 1))
 		{
-		//	printf("print xx0 = %lf et x1 = %lf \t y0 = %lf et y1 = %lf\n", line[i].topo[j].px, line[i].topo[j + 1].px, line[i].topo[j].py, line[i].topo[j + 1].py);
-			bresenham_choose_line((int)line[i].topo[j].px, (int)line[i].topo[j].py, (int)line[i].topo[j + 1].px, (int)line[i].topo[j + 1].py, data);
-		//	bresenham_choose_line((int)line[i].topo[j].px, (int)line[i + 1].topo[j].py, (int)line[i].topo[j].px, (int)line[i + 1].topo[j].py, data);
-
+			bresenham_choose_line(line[i].topo[j], line[i].topo[j + 1], data);
 			j++;
 		}
 		i++;
@@ -152,9 +151,7 @@ void	draw_y_line(t_line *line, t_map *map, t_data *data)
 		i = 0;
 		while (i < map->nb_line - 1)
 		{
-			//bresenham_choose_line((int)line[i].topo[j].px, (int)line[i].topo[j].py, (int)line[i].topo[j + 1].px, (int)line[i].topo[j + 1].py, data);
-			bresenham_choose_line((int)line[i].topo[j].px, (int)line[i].topo[j].py, (int)line[i + 1].topo[j].px, (int)line[i + 1].topo[j].py, data);
-
+			bresenham_choose_line(line[i].topo[j], line[i + 1].topo[j], data);
 			i++;
 		}
 		j++;

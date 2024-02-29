@@ -11,25 +11,18 @@
 /* ************************************************************************** */
 #include "fdf.h"
 
-int	count_lines(char *s, t_map *map)
+int	create_lines(char *s, t_map *map)
 {
-	int file;
-	char *str;
-
-	// verifier que le fichier s'appelle bien .fdf !!!
+	int		file;
+	char	*str;
 
 	map->nb_line = 0;
 	file = open(s, O_RDONLY);
 	if (file == -1)
 		return (-1);
 	str = get_next_line(file);
-	while (str)
-	{
-		free(str);
-		str = get_next_line(file);
-		map->nb_line++;
-	}
-	if (errno != 0) //pour verifier si gnl me revoit pas null a cause d'un malloc qui pete
+	count_lines(map, file, str);
+	if (errno != 0)
 	{
 		close(file);
 		return (-1);
@@ -44,15 +37,25 @@ int	count_lines(char *s, t_map *map)
 	return (0);
 }
 
-
-//2eme appel GNL malloc nb de x et remplir la structure
-int	create_array(char *s, t_map *map)
+size_t	count_lines(t_map *map, int file, char *str)
 {
-	int file;
-	char *str;
-	size_t i = 0;
+	while (str)
+	{
+		free(str);
+		str = get_next_line(file);
+		map->nb_line++;
+	}
+	return (map->nb_line);
+}
+
+int	create_topo_array(char *s, t_map *map)
+{
+	int		file;
+	char	*str;
+	size_t	i;
 	t_line	*line;
 
+	i = 0;
 	file = open(s, O_RDONLY);
 	if (file == -1)
 		return (-1);
@@ -74,8 +77,7 @@ int	create_array(char *s, t_map *map)
 
 int	allocate_line(t_line *line, char *str, t_map *map)
 {
-	char **split_return;
-	(void) map;
+	char	**split_return;
 
 	split_return = ft_split(str, ' ');
 	if (split_return == NULL)
@@ -87,15 +89,14 @@ int	allocate_line(t_line *line, char *str, t_map *map)
 		free_array(split_return);
 		return (-1);
 	}
-	fill_array(split_return, line, map);
+	fill_topo_array(split_return, line, map);
 	free_array(split_return);
 	return (0);
 }
 
-
-void	fill_array(char **split_return, t_line *line, t_map *map)
+void	fill_topo_array(char **split_return, t_line *line, t_map *map)
 {
-	size_t i;
+	size_t		i;
 	static int	y = 0;
 
 	i = 0;

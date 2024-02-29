@@ -20,6 +20,7 @@ MLX = libmlx_Linux.a
 SRCS_DIR = ./srcs
 
 SRCS =\
+		test.c \
 		fdf.c \
 		events.c \
 		bresenham.c \
