@@ -6,7 +6,7 @@
 #    By: anfichet <anfichet@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/16 18:25:46 by anfichet          #+#    #+#              #
-#    Updated: 2024/01/31 14:49:28 by anfichet         ###   ########.fr        #
+#    Updated: 2024/02/28 19:42:39 by anfichet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ MLX_TARGET = ./mlx/libmlx_Linux.a
 
 CC = cc
 
-CFLAGS = -Werror -Wextra -Wall -w -g3 -MMD -MP
+CFLAGS = -Werror -Wextra -Wall -g3 -MMD -MP
 
 CPPFLAGS = -I$(INCS) -I$(INCS_LIBFT) -I$(INCS_MLX)
 

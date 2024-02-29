@@ -6,7 +6,7 @@
 /*   By: anfichet <anfichet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 17:36:07 by anfichet          #+#    #+#             */
-/*   Updated: 2024/02/28 17:36:07 by anfichet         ###   ########.fr       */
+/*   Updated: 2024/02/28 19:38:51 by anfichet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "fdf.h"
@@ -23,7 +23,7 @@ size_t ft_array_len(char **array)
 
 void	free_array(char **array)
 {
-	int i;
+	size_t i;
 
 	i = 0;
 	while (array[i])
@@ -37,8 +37,7 @@ void	free_array(char **array)
 
 void	free_map(t_map *map)
 {
-	int i;
-	int j;
+	size_t i;
 	size_t nb_line;
 
 	i = 0;
@@ -50,3 +49,21 @@ void	free_map(t_map *map)
 	}
 	free(map->line);
 }
+
+void	print_map(t_map *map)
+{
+	size_t	i = 0;
+	size_t	j = 0;
+	while (i < map->nb_line)
+	{
+		j = 0;
+		while (j < map->line[i].nb_point_per_line)
+		{
+			printf("x = %d, y = %d, z = %d, iso px=%f, iso py=%f\n", map->line[i].topo[j].x,
+				   map->line[i].topo[j].y, map->line[i].topo[j].z, map->line[i].topo[j].px, map->line[i].topo[j].py);
+			j++;
+		}
+		i++;
+	}
+}
+

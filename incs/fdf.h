@@ -43,11 +43,11 @@ typedef struct	s_data
 
 typedef struct	s_topo
 {
-	int x;
+	int	x;
 	int y;
 	int z;
-	int px;
-	int py;
+	double px;
+	double py;
 }	t_topo;
 
 typedef struct	s_line
@@ -59,24 +59,30 @@ typedef struct	s_line
 typedef struct	s_map
 {
 	t_line	*line; //tableau de lignes
-	int 	nb_line;
+	size_t 	nb_line;
 }	t_map;
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int	ft_key_close(int keycode, t_vars *vars);
 int	ft_mouse_close(t_vars *vars);
-void plot_line_low(int x0, int y0, int x1, int y1, t_data *data);
-void plot_line_high(int x0, int y0, int x1, int y1, t_data *data);
-void	plot_line(int x0, int y0, int x1, int y1, t_data *data);
+void bresenham_low(int x0, int y0, int x1, int y1, t_data *data);
+void	bresenham_high(int x0, int y0, int x1, int y1, t_data *data);
+void	bresenham_choose_line(int x0, int y0, int x1, int y1, t_data *data);
 int	key_hook(int keycode, t_vars *vars);
 int ft_mouse_line(int button, int x1, int y1, t_data *data);
 
 int	count_lines(char *s, t_map	*map);
 int	create_array(char *s, t_map *map);
 size_t ft_array_len(char **array);
-int	allocate_line(t_line *line, char *str);
+int	allocate_line(t_line *line, char *str, t_map *map);
 void	free_array(char **array);
-void	fill_array(char **split_return, t_line *line);
+void	fill_array(char **split_return, t_line *line, t_map *map);
 void	free_map(t_map *map);
+void	isometric_point(t_map *map, t_line *line);
+void	draw_x_line(t_line *line, t_map *map, t_data *data);
+void	draw_y_line(t_line *line, t_map *map, t_data *data);
+
+//A SUPPRIMER
+void	print_map(t_map *map);
 
 #endif
