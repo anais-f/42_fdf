@@ -102,10 +102,9 @@ void	fill_topo_array(char **split_return, t_line *line, t_map *map)
 	i = 0;
 	while (i < line->nb_point_per_line)
 	{
-		line->topo[i].x = ((int)i - (int)line->nb_point_per_line / 2) * 10;
-		line->topo[i].y = ((int)y - (int)map->nb_line / 2) * 10;
-		line->topo[i].z = ft_atoi(split_return[i]) * 10;
-		// a voir si securisation atoi avec errno
+		line->topo[i].x = ((int)i - (int)line->nb_point_per_line / 2) * 5;
+		line->topo[i].y = ((int)y - (int)map->nb_line / 2) * 5;
+		line->topo[i].z = ft_atoi(split_return[i]) * 1;
 		i++;
 	}
 	y++;

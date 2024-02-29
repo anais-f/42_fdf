@@ -16,35 +16,40 @@ int main(int argc, char **argv)
 	t_vars	vars;
 	t_data	data;
 	t_map	map;
-	(void) argc;
 
-	// VERIFIER L'ENTREE DE ARGV 1 POUR LA CARTE
-	if (create_lines(argv[1], &map) == -1)
+	if (argc != 2)
 	{
-		perror("Error during parsing");
+		ft_printf("Invalid parameter\n");
 		return (-1);
 	}
-	if (create_topo_array(argv[1], &map) == -1)
+	else
 	{
-		perror("Error during parsing");
-		return (-1);
+		check_map(argv[1]);
+		if (create_lines(argv[1], &map) == -1)
+		{
+			perror("Error during parsing");
+			return (-1);
+		}
+		if (create_topo_array(argv[1], &map) == -1)
+		{
+			perror("Error during parsing");
+			return (-1);
+		}
+		fill_isometric_point(&map, map.line);
+		vars.mlx_ptr = mlx_init();
+		vars.win_ptr = mlx_new_window(vars.mlx_ptr, WIDTH, HEIGH, "Fdf");
+		data.vars = &vars;
+		data.img = mlx_new_image(vars.mlx_ptr, WIDTH, HEIGH);
+		data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
+
+		draw_x_line(map.line, &map, &data);
+		draw_y_line(map.line, &map, &data);
+
+
+		mlx_put_image_to_window(vars.mlx_ptr, vars.win_ptr, data.img, 0, 0);
+		mlx_key_hook(vars.win_ptr, ft_key_close, &vars);
+		mlx_hook(vars.win_ptr, 17, 0L, mlx_loop_end, vars.mlx_ptr);
 	}
-
-	fill_isometric_point(&map, map.line);
-
-	vars.mlx_ptr = mlx_init();
-	vars.win_ptr = mlx_new_window(vars.mlx_ptr, WIDTH, HEIGH, "Hello Ian!");
-	data.vars = &vars;
-	data.img = mlx_new_image(vars.mlx_ptr, WIDTH, HEIGH);
-	data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
-	draw_x_line(map.line, &map, &data);
-	draw_y_line(map.line, &map, &data);
-
-//	print_map(&map);
-	//mlx_mouse_hook(vars.win_ptr, ft_mouse_line, &data);
-	mlx_put_image_to_window(vars.mlx_ptr, vars.win_ptr, data.img, 0, 0);
-	mlx_key_hook(vars.win_ptr, ft_key_close, &vars);
-	mlx_hook(vars.win_ptr, 17, 0L, mlx_loop_end, vars.mlx_ptr);
 
 	mlx_loop(vars.mlx_ptr);
 	mlx_destroy_image(vars.mlx_ptr, data.img);
@@ -54,7 +59,29 @@ int main(int argc, char **argv)
 	free(vars.mlx_ptr);
 }
 
+//void	init_window(t_vars *vars, t_data * data)
+//{
+//
+//}
 
+int	check_map(char *str)
+{
+	int i;
+	const char str_check[] = ".fdf";
 
-
-
+	i = 0;
+	if (ft_strlen(str) <= 5)
+	{
+		ft_printf("Invalid parameter\n");
+		exit (1);
+	}
+	while (str[i] != '.')
+		i++;
+	printf("str =%s\n", &str[i]);
+	if (ft_strncmp(str_check, &str[i], 5) != 0)
+	{
+		ft_printf("Invalid file\n");
+		exit (1);
+	}
+	return (0);
+}

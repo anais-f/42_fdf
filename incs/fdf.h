@@ -62,6 +62,14 @@ typedef struct	s_map
 	size_t 	nb_line;
 }	t_map;
 
+typedef struct	s_bresenham
+{
+	int	dx;
+	int	dy;
+	int	yi;
+	int xi;
+	int	decision;
+}	t_bresenham;
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int		ft_key_close(int keycode, t_vars *vars);
@@ -70,6 +78,7 @@ void 	bresenham_low(t_topo topo_start, t_topo topo_end, t_data *data);
 void	bresenham_high(t_topo topo_start, t_topo topo_end, t_data *data);
 void	bresenham_choose_line(t_topo topo_start, t_topo topo_end, t_data *data);
 int		key_hook(int keycode, t_vars *vars);
+int		check_map(char *str);
 
 int		create_lines(char *s, t_map	*map);
 size_t	count_lines(t_map *map, int file, char *str);

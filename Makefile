@@ -26,6 +26,7 @@ SRCS =\
 		bresenham.c \
 		parsing.c \
 		utils.c \
+		projection.c \
 
 
 SRCS := $(SRCS:%=$(SRCS_DIR)/%)
