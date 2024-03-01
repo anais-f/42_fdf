@@ -48,3 +48,8 @@ void	free_map(t_map *map)
 	}
 	free(map->line);
 }
+
+void	init_struct(t_data *data)
+{
+	data->zoom = 20;
+}

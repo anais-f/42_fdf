@@ -6,7 +6,7 @@
 /*   By: anfichet <anfichet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 17:51:54 by anfichet          #+#    #+#             */
-/*   Updated: 2024/02/06 17:51:54 by anfichet         ###   ########.fr       */
+/*   Updated: 2024/03/01 17:50:32 by anfichet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,6 @@
 # include <string.h> // strerror
 # include <math.h>
 # include <errno.h>
-
-typedef struct	s_vars {
-	void	*mlx_ptr;
-	void	*win_ptr;
-}				t_vars;
-
-typedef struct	s_data
-{
-	void	*img;
-	char	*addr;
-	int 	bits_per_pixel;
-	int 	line_length;
-	int 	endian;
-	t_vars	*vars;
-}	t_data;
 
 typedef struct	s_topo
 {
@@ -60,7 +45,22 @@ typedef struct	s_map
 {
 	t_line	*line; //tableau de lignes
 	size_t 	nb_line;
+	size_t	nb_point_biggest_line;
 }	t_map;
+
+typedef struct	s_data
+{
+	void	*mlx_ptr;
+	void	*win_ptr;
+	void	*img;
+	char	*addr;
+	int 	bits_per_pixel;
+	int 	line_length;
+	int 	endian;
+	double 	zoom;
+	double 	offset;
+	t_map	*map;
+}	t_data;
 
 typedef struct	s_bresenham
 {
@@ -72,13 +72,16 @@ typedef struct	s_bresenham
 }	t_bresenham;
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-int		ft_key_close(int keycode, t_vars *vars);
-int		ft_mouse_close(t_vars *vars);
+int		ft_key_hook(int keycode, t_data *data);
+int		ft_mouse_close(t_data *data);
 void 	bresenham_low(t_topo topo_start, t_topo topo_end, t_data *data);
 void	bresenham_high(t_topo topo_start, t_topo topo_end, t_data *data);
 void	bresenham_choose_line(t_topo topo_start, t_topo topo_end, t_data *data);
-int		key_hook(int keycode, t_vars *vars);
+int		key_hook(int keycode, t_data *data);
+int	ft_key_zoom(int keycode, t_data *data);
 int		check_map(char *str);
+void	init_struct(t_data *data);
+int	ft_mouse_zoom(int button, int x1, int y1, t_data *data);
 
 int		create_lines(char *s, t_map	*map);
 size_t	count_lines(t_map *map, int file, char *str);
@@ -88,9 +91,11 @@ int		allocate_line(t_line *line, char *str, t_map *map);
 void	free_array(char **array);
 void	fill_topo_array(char **split_return, t_line *line, t_map *map);
 void	free_map(t_map *map);
-void	fill_isometric_point(t_map *map, t_line *line);
+void	fill_isometric_point(t_map *map, t_line *line, t_data *data);
 void	draw_x_line(t_line *line, t_map *map, t_data *data);
 void	draw_y_line(t_line *line, t_map *map, t_data *data);
+void	find_biggest_line(t_map *map, t_line *line);
+int	auto_zoom(t_map *map, t_line *line);
 
 //A SUPPRIMER
 void	print_map(t_map *map);
