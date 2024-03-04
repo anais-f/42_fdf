@@ -34,21 +34,20 @@ int main(int argc, char **argv)
 			perror("Error during parsing");
 			return (-1);
 		}
+		print_map(&map);
+		printf("nb de lignes comptes = %zu\n", map.nb_line);
 		ft_bzero(&data, sizeof(t_data));
 		init_struct(&data);
 		data.map = &map;
 		data.mlx_ptr = mlx_init();
-		data.win_ptr = mlx_new_window(data.mlx_ptr, WIDTH, HEIGH, "Fdf");
+		data.win_ptr = mlx_new_window(data.mlx_ptr, WIDTH, HEIGH, argv[1]);
 		data.img = mlx_new_image(data.mlx_ptr, WIDTH, HEIGH);
 		data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
-		fill_isometric_point(&map, map.line, &data);
-		draw_x_line(map.line, &map, &data);
-		draw_y_line(map.line, &map, &data);
 
-		mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, data.img, 0, 0);
 
+		mlx_loop_hook(data.mlx_ptr, draw_image, &data);
 		mlx_mouse_hook(data.win_ptr, ft_mouse_zoom, &data);
-		mlx_key_hook(data.win_ptr, ft_key_hook, &data);
+		mlx_hook(data.win_ptr, 02, 1L<<0, ft_key_hook, &data);
 		mlx_hook(data.win_ptr, 17, 0L, mlx_loop_end, data.mlx_ptr);
 	}
 
@@ -60,8 +59,6 @@ int main(int argc, char **argv)
 	free(data.mlx_ptr);
 	return (0);
 }
-
-
 
 int	check_map(char *str)
 {

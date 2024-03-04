@@ -50,16 +50,20 @@ typedef struct	s_map
 
 typedef struct	s_data
 {
-	void	*mlx_ptr;
-	void	*win_ptr;
-	void	*img;
-	char	*addr;
-	int 	bits_per_pixel;
-	int 	line_length;
-	int 	endian;
-	double 	zoom;
-	double 	offset;
-	t_map	*map;
+	void		*mlx_ptr;
+	void		*win_ptr;
+	void		*img;
+	char		*addr;
+	int 		bits_per_pixel;
+	int 		line_length;
+	int 		endian;
+	int 		color[10];
+	int 		actual_color;
+	double 		zoom;
+	double 		z_heigh;
+	double 		offset_px;
+	double 		offset_py;
+	t_map		*map;
 }	t_data;
 
 typedef struct	s_bresenham
@@ -78,10 +82,13 @@ void 	bresenham_low(t_topo topo_start, t_topo topo_end, t_data *data);
 void	bresenham_high(t_topo topo_start, t_topo topo_end, t_data *data);
 void	bresenham_choose_line(t_topo topo_start, t_topo topo_end, t_data *data);
 int		key_hook(int keycode, t_data *data);
-int	ft_key_zoom(int keycode, t_data *data);
+int		ft_key_zoom_and_color(int keycode, t_data *data);
 int		check_map(char *str);
 void	init_struct(t_data *data);
-int	ft_mouse_zoom(int button, int x1, int y1, t_data *data);
+int		ft_mouse_zoom(int button, int x1, int y1, t_data *data);
+int		ft_key_diagonal_translation(int keycode, t_data *data);
+int		ft_key_translation(int keycode, t_data *data);
+int 	draw_image(t_data *data);
 
 int		create_lines(char *s, t_map	*map);
 size_t	count_lines(t_map *map, int file, char *str);
@@ -95,7 +102,7 @@ void	fill_isometric_point(t_map *map, t_line *line, t_data *data);
 void	draw_x_line(t_line *line, t_map *map, t_data *data);
 void	draw_y_line(t_line *line, t_map *map, t_data *data);
 void	find_biggest_line(t_map *map, t_line *line);
-int	auto_zoom(t_map *map, t_line *line);
+
 
 //A SUPPRIMER
 void	print_map(t_map *map);

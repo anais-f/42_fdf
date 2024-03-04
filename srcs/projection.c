@@ -22,17 +22,18 @@ void	fill_isometric_point(t_map *map, t_line *line, t_data *data)
 		j = 0;
 		while (j < line[i].nb_point_per_line)
 		{
-			line[i].topo[j].px = ((sqrt(2.0) / 2) * (double)line[i].topo[j].x * data->zoom) \
-				- ((sqrt(2.0) / 2) * (double)line[i].topo[j].y * data->zoom);
-			line[i].topo[j].py = (1 / sqrt(6.0) * (double)line[i].topo[j].x * data->zoom) \
-				+ (1 / sqrt(6.0) * (double)line[i].topo[j].y * data->zoom) \
-				- (sqrt(2.0 / 3.0) * (double)line[i].topo[j].z * (data->zoom / 2));
-			line[i].topo[j].px += (double)WIDTH / 2;
-			line[i].topo[j].py += (double)HEIGH / 2;
+			line[i].topo[j].px = (((sqrt(2.0) / 2) * line[i].topo[j].x * data->zoom) \
+				- ((sqrt(2.0) / 2) * line[i].topo[j].y * data->zoom)) + data->offset_px;
+			line[i].topo[j].py = ((1 / sqrt(6.0) * line[i].topo[j].x * data->zoom) \
+				+ (1 / sqrt(6.0) * line[i].topo[j].y * data->zoom) \
+				- (sqrt(2.0 / 3.0) * line[i].topo[j].z * data->zoom * data->z_heigh)) + data->offset_py;
+			line[i].topo[j].px += WIDTH / 2;
+			line[i].topo[j].py += HEIGH / 2;
 			j++;
 		}
 		i++;
 	}
+	//printf("nb de i = %zu\n", i);
 }
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
@@ -65,7 +66,6 @@ void	draw_x_line(t_line *line, t_map *map, t_data *data)
 }
 
 // refaire si ligne non entiere
-//
 
 void	draw_y_line(t_line *line, t_map *map, t_data *data)
 {
@@ -79,10 +79,6 @@ void	draw_y_line(t_line *line, t_map *map, t_data *data)
 		i = 0;
 		while (i < map->nb_line - 1)
 		{
-			if (!line[i].topo[j])
-			{
-
-			}
 			bresenham_choose_line(line[i].topo[j], line[i + 1].topo[j], data);
 			i++;
 		}

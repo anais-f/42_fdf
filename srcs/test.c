@@ -49,3 +49,35 @@ void	print_map(t_map *map)
 		i++;
 	}
 }
+
+//void	bresenham_high(t_topo topo_start, t_topo topo_end, t_data *data)
+//{
+//	//double test = (double)data->actual_color;
+//	t_bresenham	param;
+//
+//	param.dx = topo_end.px - topo_start.px;
+//	param.dy = topo_end.py - topo_start.py;
+//	param.xi = 1;
+//	param.decision = (2 * param.dx) - param.dy;
+//	if (param.dx < 0)
+//	{
+//		param.xi = -1;
+//		param.dx = param.dx * -1;
+//	}
+//	while (topo_start.py <= topo_end.py  && ((topo_start.py >= 0 && topo_start.py <= HEIGH) || (topo_start.px >= 0 && topo_start.px <= WIDTH)))
+//	{
+////		if (test < 9)
+////			test += 0.03;
+////		else
+////			test = 0;
+//		my_mlx_pixel_put(data, topo_start.px, topo_start.py, data->color[test]);
+//		if (param.decision > 0)
+//		{
+//			topo_start.px = topo_start.px + param.xi;
+//			param.decision = param.decision + (2 * (param.dx - param.dy));
+//		}
+//		else
+//			param.decision = param.decision + 2 * param.dx;
+//		topo_start.py++;
+//	}
+//}
