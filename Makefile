@@ -20,7 +20,6 @@ MLX = libmlx_Linux.a
 SRCS_DIR = ./srcs
 
 SRCS =\
-		test.c \
 		fdf.c \
 		events.c \
 		bresenham.c \
@@ -54,7 +53,7 @@ MLX_TARGET = ./mlx/libmlx_Linux.a
 
 CC = cc
 
-CFLAGS = -Werror -Wextra -Wall -g3 -MMD -MP
+CFLAGS = -Werror -Wextra -Wall -g3 -MMD -MP -O2
 
 CPPFLAGS = -I$(INCS) -I$(INCS_LIBFT) -I$(INCS_MLX)
 

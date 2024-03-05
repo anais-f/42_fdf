@@ -38,14 +38,13 @@ typedef struct	s_topo
 typedef struct	s_line
 {
 	t_topo	*topo; // tableau de points de chaque ligne
-	size_t 	nb_point_per_line;
+	size_t 	nb_point;
 }	t_line;
 
 typedef struct	s_map
 {
 	t_line	*line; //tableau de lignes
 	size_t 	nb_line;
-	size_t	nb_point_biggest_line;
 }	t_map;
 
 typedef struct	s_data
@@ -83,13 +82,15 @@ void	bresenham_high(t_topo topo_start, t_topo topo_end, t_data *data);
 void	bresenham_choose_line(t_topo topo_start, t_topo topo_end, t_data *data);
 int		key_hook(int keycode, t_data *data);
 int		ft_key_zoom_and_color(int keycode, t_data *data);
-int		check_map(char *str);
+int		check_argv(char *str);
 void	init_struct(t_data *data);
 int		ft_mouse_zoom(int button, int x1, int y1, t_data *data);
 int		ft_key_diagonal_translation(int keycode, t_data *data);
 int		ft_key_translation(int keycode, t_data *data);
 int 	draw_image(t_data *data);
-
+int		launch_window(t_data *data, t_map *map, char **argv);
+void	launch_event(t_data *data);
+void	loop_and_destroy(t_data *data, t_map *map);
 int		create_lines(char *s, t_map	*map);
 size_t	count_lines(t_map *map, int file, char *str);
 int		create_topo_array(char *s, t_map *map);
@@ -99,13 +100,6 @@ void	free_array(char **array);
 void	fill_topo_array(char **split_return, t_line *line, t_map *map);
 void	free_map(t_map *map);
 void	fill_isometric_point(t_map *map, t_line *line, t_data *data);
-void	draw_x_line(t_line *line, t_map *map, t_data *data);
-void	draw_y_line(t_line *line, t_map *map, t_data *data);
-void	find_biggest_line(t_map *map, t_line *line);
-
-
-//A SUPPRIMER
-void	print_map(t_map *map);
-int	ft_mouse_line(int button, int x1, int y1, t_data *data);
+void	draw_line(t_line *line, t_map *map, t_data *data);
 
 #endif

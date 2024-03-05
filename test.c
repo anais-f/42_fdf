@@ -1,103 +1,104 @@
-//#include "fdf.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: anfichet <anfichet@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/18 16:35:50 by anfichet          #+#    #+#             */
+/*   Updated: 2024/02/18 16:35:50 by anfichet         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+#include "fdf.h"
 
-//
-//int main(int argc, char **argv)
+/*int	ft_mouse_line(int button, int x1, int y1, t_data *data)
+{
+	int	x;
+	int	y;
+
+	x = WIDTH / 2;
+	y = HEIGH / 2;
+	if (button == 1)
+	{
+		bresenham_choose_line(x, y, x1, y1, data);
+		mlx_put_image_to_window(data->vars->mlx_ptr,data->vars->win_ptr, \
+			data->img, 0, 0);
+	}
+	return (0);
+}*/
+
+/*mlx_mouse_hook(vars.win_ptr, ft_mouse_line, &data);*/
+
+void	print_map(t_map *map)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (i < map->nb_line)
+	{
+		j = 0;
+		while (j < map->line[i].nb_point)
+		{
+			printf("x = %d, y = %d, z = %d, iso px=%f, iso py=%f\n", \
+				map->line[i].topo[j].x, map->line[i].topo[j].y, \
+				map->line[i].topo[j].z, map->line[i].topo[j].px, \
+				map->line[i].topo[j].py);
+			j++;
+		}
+		i++;
+	}
+}
+
+//void	bresenham_high(t_topo topo_start, t_topo topo_end, t_data *data)
 //{
-//	t_vars	vars;
-//	t_data	data;
-//	int		file;
-//	int 	nb_line = 1;
-//	int 	nb_point = 0;
-//	char 	*str;
-//	int 	i = 0;
-//	int 	j = 0;
-//	t_topo	**topo_line_array;
-//	//t_topo	**topo_global_array;
+//	//double test = (double)data->actual_color;
+//	t_bresenham	param;
 //
-//	file = open(argv[1], O_RDONLY);
-//	str = get_next_line(file);
-//	while (str)
+//	param.dx = topo_end.px - topo_start.px;
+//	param.dy = topo_end.py - topo_start.py;
+//	param.xi = 1;
+//	param.decision = (2 * param.dx) - param.dy;
+//	if (param.dx < 0)
 //	{
-//		while ((str[i] >= '0' && str[i] <= '9') && (str[i + 1] == ' ' || str[i + 1] == '\n' || str[i + 1] == '\0'))
-//		{
-//			nb_point++;
-//			i++;
-//		}
-//		topo_line_array[j] = malloc(sizeof(t_topo) * nb_point);
-//		if (topo_line_array[j] == NULL)
-//		{
-//			perror("Error during allocation memory");
-//			return (-1);
-//		}
-//		free(str);
-//		str = get_next_line(file);
-//		nb_line++;
-//
+//		param.xi = -1;
+//		param.dx = param.dx * -1;
 //	}
-//	topo_line_array = malloc(nb_line * sizeof(t_topo *));
-//	if (topo_line_array == NULL)
+//	while (topo_start.py <= topo_end.py  && ((topo_start.py >= 0 && topo_start.py <= HEIGH) || (topo_start.px >= 0 && topo_start.px <= WIDTH)))
 //	{
-//		perror("Error during allocation memory");
-//		return (-1);
+////		if (test < 9)
+////			test += 0.03;
+////		else
+////			test = 0;
+//		my_mlx_pixel_put(data, topo_start.px, topo_start.py, data->color[test]);
+//		if (param.decision > 0)
+//		{
+//			topo_start.px = topo_start.px + param.xi;
+//			param.decision = param.decision + (2 * (param.dx - param.dy));
+//		}
+//		else
+//			param.decision = param.decision + 2 * param.dx;
+//		topo_start.py++;
 //	}
-//	close(file);
-
-
-
-
-
-
-//void	create_array(char *s, t_topo **map, int *nb_point)
-//{
-//	int file;
-//	int i;
-//	int j;
-//	char *str;
-//
-//	file = open(s, O_RDONLY);
-//	str = get_next_line(file);
-//	while (str)
-//	{
-//		nb_point = 0;
-//		i = 0;
-//		while (str[i])
-//		{
-//			if ((str[i] >= '0' && str[i] <= '9') && (str[i + 1] == ' ' || str[i + 1] == '\n' || str[i + 1] == '\0'))
-//				(*nb_point)++;
-//			i++;
-//		}
-//		map[j] = malloc(sizeof(t_topo) * nb_point);
-//		if (map[j] == NULL)
-//		{
-//			perror("Error during allocation memory");
-//			return ;
-//		}
-//		k = 0;
-//
-//		int l;
-//		while (k != nb_point)
-//		{
-//			i = 0;
-//			l = 0;
-//			while (str[i] && str[i] != '\n')
-//			{
-//				map[j][l].z = ft_atoi(str + i);
-//				l++;
-//				printf("atoi = %d\n", ft_atoi(str + i));
-//				while (str[i] && str[i] != ' ')
-//					i++;
-//				if (str[i])
-//					i++;
-//			}
-//			map[j][k].y0 = j;
-//			map[j][k].x0 = k;
-//			k++;
-//			printf("k = %d\n", k);
-//		}
-//		j++;
-//
-//		free(str);
-//		str = get_next_line(file);
-//	}
-//	close(file);
 //}
+
+
+void	find_biggest_line(t_map *map, t_line *line)
+{
+	size_t i;
+	size_t j;
+
+	i = 0;
+	map->nb_point_biggest_line = line->nb_point;
+	while (i < map->nb_line)
+	{
+		j = 0;
+		while (j < line[i].nb_point)
+		{
+			j++;
+		}
+		if (line[i].nb_point > line[i - 1].nb_point)
+			map->nb_point_biggest_line = line[i].nb_point;
+		i++;
+	}
+}
