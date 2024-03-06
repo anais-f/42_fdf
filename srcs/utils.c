@@ -74,7 +74,7 @@ int	check_argv(char *str)
 	const char	str_check[] = ".fdf";
 
 	i = 0;
-	if (ft_strlen(str) <= 5)
+	if (ft_strlen(str) < 5)
 	{
 		ft_printf("Invalid parameter\n");
 		exit (1);

@@ -6,7 +6,7 @@
 /*   By: anfichet <anfichet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:35:50 by anfichet          #+#    #+#             */
-/*   Updated: 2024/03/01 14:13:16 by anfichet         ###   ########.fr       */
+/*   Updated: 2024/03/05 19:32:54 by anfichet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "fdf.h"
@@ -63,7 +63,7 @@ int	create_topo_array(char *s, t_map *map)
 	while (str)
 	{
 		line = &map->line[i];
-		if (allocate_line(line, str, map) == -1)
+		if (allocate_line(line, str) == -1)
 		{
 			return (-1);
 		}
@@ -75,7 +75,7 @@ int	create_topo_array(char *s, t_map *map)
 	return (0);
 }
 
-int	allocate_line(t_line *line, char *str, t_map *map)
+int	allocate_line(t_line *line, char *str)
 {
 	char	**split_return;
 
@@ -89,12 +89,12 @@ int	allocate_line(t_line *line, char *str, t_map *map)
 		free_array(split_return);
 		return (-1);
 	}
-	fill_topo_array(split_return, line, map);
+	fill_topo_array(split_return, line);
 	free_array(split_return);
 	return (0);
 }
 
-void	fill_topo_array(char **split_return, t_line *line, t_map *map)
+void	fill_topo_array(char **split_return, t_line *line)
 {
 	size_t		i;
 	static int	y = 0;
@@ -104,8 +104,8 @@ void	fill_topo_array(char **split_return, t_line *line, t_map *map)
 	{
 		if (split_return[i])
 		{
-			line->topo[i].x = (int)i - ((int)line->nb_point / 2);
-			line->topo[i].y = (int)y - ((int)map->nb_line / 2);
+			line->topo[i].x = (int)i;
+			line->topo[i].y = (int)y;
 			line->topo[i].z = ft_atoi(split_return[i]);
 		}
 		i++;

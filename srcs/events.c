@@ -46,35 +46,35 @@ int	ft_key_zoom_and_color(int keycode, t_data *data)
 
 int	ft_key_translation(int keycode, t_data *data)
 {
-	if (keycode == XK_Down || keycode == 65433)
+	if (keycode == XK_Down || keycode == TWO)
 		data->offset_py += 10;
-	if (keycode == XK_Left || keycode == 65430)
+	if (keycode == XK_Left || keycode == FOUR)
 		data->offset_px -= 10;
-	if (keycode == XK_Right || keycode == 65432)
+	if (keycode == XK_Right || keycode == SIX)
 		data->offset_px += 10;
-	if (keycode == XK_Up || keycode == 65431)
+	if (keycode == XK_Up || keycode == HEIGHT)
 		data->offset_py -= 10;
 	return (0);
 }
 
 int	ft_key_diagonal_translation(int keycode, t_data *data)
 {
-	if (keycode == 65436)
+	if (keycode == ONE)
 	{
 		data->offset_px -= 10;
 		data->offset_py += 10;
 	}
-	if (keycode == 65435)
+	if (keycode == THREE)
 	{
 		data->offset_px += 10;
 		data->offset_py += 10;
 	}
-	if (keycode == 65429)
+	if (keycode == SEVEN)
 	{
 		data->offset_px -= 10;
 		data->offset_py -= 10;
 	}
-	if (keycode == 65434)
+	if (keycode == NINE)
 	{
 		data->offset_px += 10;
 		data->offset_py -= 10;
