@@ -85,9 +85,9 @@ typedef struct s_bresenham
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int		ft_key_hook(int keycode, t_data *data);
 int		ft_mouse_close(t_data *data);
-void	bresenham_low(t_topo topo_start, t_topo topo_end, t_data *data);
-void	bresenham_high(t_topo topo_start, t_topo topo_end, t_data *data);
-void	bresenham_choose_line(t_topo topo_start, t_topo topo_end, t_data *data);
+void	line_x_axis(t_topo topo_start, t_topo topo_end, t_data *data);
+void	line_y_axis(t_topo topo_start, t_topo topo_end, t_data *data);
+void	choose_line(t_topo topo_start, t_topo topo_end, t_data *data);
 int		key_hook(int keycode, t_data *data);
 int		ft_key_zoom_and_color(int keycode, t_data *data);
 int		check_argv(char *str);

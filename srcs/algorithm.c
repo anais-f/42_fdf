@@ -12,7 +12,7 @@
 #include "fdf.h"
 
 /* for dx > dy, octants along the x axis */
-void	bresenham_low(t_topo topo_start, t_topo topo_end, t_data *data)
+void	line_x_axis(t_topo topo_start, t_topo topo_end, t_data *data)
 {
 	t_bresenham	param;
 
@@ -42,7 +42,7 @@ void	bresenham_low(t_topo topo_start, t_topo topo_end, t_data *data)
 }
 
 /* for dx < dy, octants along the y axis */
-void	bresenham_high(t_topo topo_start, t_topo topo_end, t_data *data)
+void	line_y_axis(t_topo topo_start, t_topo topo_end, t_data *data)
 {
 	t_bresenham	param;
 
@@ -71,20 +71,20 @@ void	bresenham_high(t_topo topo_start, t_topo topo_end, t_data *data)
 	}
 }
 
-void	bresenham_choose_line(t_topo topo_start, t_topo topo_end, t_data *data)
+void	choose_line(t_topo topo_start, t_topo topo_end, t_data *data)
 {
 	if (fabs(topo_end.py - topo_start.py) < fabs(topo_end.px - topo_start.px))
 	{
 		if (topo_start.px > topo_end.px)
-			bresenham_low(topo_end, topo_start, data);
+			line_x_axis(topo_end, topo_start, data);
 		else
-			bresenham_low(topo_start, topo_end, data);
+			line_x_axis(topo_start, topo_end, data);
 	}
 	else
 	{
 		if (topo_start.py > topo_end.py)
-			bresenham_high(topo_end, topo_start, data);
+			line_y_axis(topo_end, topo_start, data);
 		else
-			bresenham_high(topo_start, topo_end, data);
+			line_y_axis(topo_start, topo_end, data);
 	}
 }

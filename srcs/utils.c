@@ -70,16 +70,18 @@ void	init_struct(t_data *data)
 
 int	check_argv(char *str)
 {
-	int			i;
 	const char	str_check[] = ".fdf";
+	size_t		i;
+	size_t		len_str;
 
 	i = 0;
-	if (ft_strlen(str) < 5)
+	len_str = ft_strlen(str);
+	if (len_str < 5)
 	{
 		ft_printf("Invalid parameter\n");
 		exit (1);
 	}
-	while (str[i] != '.')
+	while (i < (len_str - 4))
 		i++;
 	if (ft_strncmp(str_check, &str[i], 5) != 0)
 	{

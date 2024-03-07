@@ -61,13 +61,13 @@ void	draw_line(t_line *line, t_map *map, t_data *data)
 			if (map->line[i].nb_point != 0 && \
 				j < map->line[i].nb_point - 1)
 			{
-				bresenham_choose_line(line[i].topo[j], \
+				choose_line(line[i].topo[j], \
 							line[i].topo[j + 1], data);
 			}
 			if (map->nb_line != 0 && i < map->nb_line - 1 && \
 				map->line[i + 1].nb_point != 0 && map->line[i + 1].nb_point > j)
 			{
-				bresenham_choose_line(line[i].topo[j], \
+				choose_line(line[i].topo[j], \
 							line[i + 1].topo[j], data);
 			}
 			j++;
